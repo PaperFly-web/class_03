@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<table>
+    <p1><a href="/paperfly/group/downloadExcel">下载</a></p1>
+    <form action="/paperfly/group/save">
+        <tr th:each="li:${data}">
+
+            <td ><span th:text="${li.name}"></span> <input   type="checkbox" name="name" th:value="${li.name}"></td>
+            <td ><span th:text="${li.no}"></span><input   type="checkbox" name="no" th:value="${li.no}"></td>
+
+
+        </tr>
+        <td><button type="submit">提交</button></td>
+    </form>
+</table>
+</body>
+</html>
