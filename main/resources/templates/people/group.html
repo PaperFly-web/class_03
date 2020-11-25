@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="/user/people">班级分组</a></li>
+    <li role="presentation" ><a href="/homework/index">作业部分</a></li>
+</ul>
+<h1 style="text-align: center" th:text="${groupName}+'分组详情'"></h1>
+<center>
+    <div class="row">
+        <div class="col-xs-6 col-md-6" >
+
+            <div >
+                <h1 th:text="${data.size()}+'人未分组'"></h1>
+                <form th:action="'/people/paperfly/group/save/'+${groupId}+'/'+${groupName}">
+                    <table>
+                        <tr th:each="li:${data}">
+
+                            <td ><span th:text="${li.name}"></span> <input  sec:authorize="hasRole('admin')" type="checkbox" name="name" th:value="${li.name}"> </td>
+                            <td ><span th:text="${li.no}"></span><input  sec:authorize="hasRole('admin')" type="checkbox" name="no" th:value="${li.no}"></td>
+
+
+                        </tr>
+                    </table>
+                    <button type="submit" sec:authorize="hasRole('admin')">提交</button>
+                </form>
+            </div>
+
+
+        </div>
+        <div class="col-xs-6 col-md-6">
+            <h1 th:text="'已经有'+${showGroup.size()}+'个分组'"></h1>
+            <p1><a sec:authorize="hasRole('admin')" th:href="'/people/paperfly/group/downloadExcel/'+${groupId}">下载</a></p1>
+
+            <table>
+                <tr th:each="li:${showGroup}">
+
+                    <td ><span th:text="${li.name}"></span>  </td>
+                    <td ><span th:text="${li.no}"></span></td>
+
+
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</center>
+
+
+
+
+</body>
+</html>

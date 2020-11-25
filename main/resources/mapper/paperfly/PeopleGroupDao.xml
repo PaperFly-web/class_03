@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.paperfly.classUtils.dao.PeopleGroupDao">
+
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.paperfly.classUtils.entity.PeopleGroupEntity" id="groupMap">
+        <result property="name" column="name"/>
+        <result property="id" column="id"/>
+        <result property="no" column="no"/>
+        <result property="orderTime" column="order_time"/>
+    </resultMap>
+    <select id="testSelectOne" parameterType="string" resultMap="groupMap">
+        select * from people_group where name=#{name}
+    </select>
+
+</mapper>

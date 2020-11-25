@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+</head>
+<body>
+<nav >
+    <ul class="nav nav-tabs">
+        <li role="presentation" sec:authorize="hasRole('admin')"  ><a href="/">HOME</a></li>
+        <li role="presentation" ><a href="/user/people">班级分组</a></li>
+
+        <li role="presentation" class="active"><a href="/homework/index">作业部分</a></li>
+    </ul>
+
+</nav>
+<div class="jumbotron" style="text-align: center">
+    <div class="container" >
+        <h2 th:text="'当前作业:'+${href}+',已有'+${data.size()}+'人完成'"></h2>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" th:style="'width: '+${completed}+'%'">
+                <span class="sr-only">45% Complete</span>
+            </div>
+        </div>
+    </div>
+</div>
+<section style="margin: 30px">
+    <form th:if="${curHomework.flag eq 0}" th:action="@{'/homework/upload/'+${href}}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputFile">上传作业</label>
+            <input type="file" id="exampleInputFile"  name="file" required>
+        </div>
+        <button type="submit" class="btn btn-default">提交</button>
+    </form>
+    <table  class="table">
+
+        <tr th:each="li:${data}">
+
+            <td ><span th:text="${li}"></span></td>
+        </tr>
+    </table>
+</section>
+
+</body>
+</html>
