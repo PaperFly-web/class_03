@@ -26,7 +26,7 @@
         <div class="form-group">
             <label class="sr-only" for="exampleInputEmail3">作业名称</label>
             <input type="text" required name="plus" class="form-control" id="exampleInputEmail3" placeholder="作业名称">
-            <input type="date" name="endTime" required>
+            <input type="datetime-local" name="endTime" required>
         </div>
         <button type="submit" class="btn btn-default">添加新的作业</button>
     </form>
@@ -43,7 +43,26 @@
                         <a th:href="'/homework/toHomeworkUpload/'+${homework.homeworkName}" class="btn btn-primary" role="button">球球你,点我交作业吧</a>
                         <a sec:authorize="hasRole('admin')" th:href="'/homework/desc/'+${homework.homeworkName}" class="btn btn-danger" role="button">删除</a>
                     </p>
+                    <p >
+                        <form method="post" sec:authorize="hasRole('admin')" class="form-inline" action="/homework/update/time">
+                            <input type="hidden" th:value="${homework.homeworkId}" name="id">
+                            <div class="form-group">
+                                <label class="sr-only" for="exampleInputPassword3">时间</label>
+                                <input required type="datetime-local" name="param" class="form-control" id="exampleInputPassword3" placeholder="选择时间">
+                            </div>
 
+                            <button type="submit" class="btn btn-default">修改时间</button>
+                        </form>
+                        <form method="post" sec:authorize="hasRole('admin')" class="form-inline" action="/homework/update/name">
+                            <input type="hidden" th:value="${homework.homeworkId}" name="id">
+                            <div class="form-group">
+                                <label class="sr-only" for="exampleInputPassword3">作业名称</label>
+                                <input required type="text" name="param" class="form-control"  placeholder="修改作业名称">
+                            </div>
+
+                            <button type="submit" class="btn btn-default">修改名称</button>
+                        </form>
+                    </p>
                 </div>
             </div>
         </div>

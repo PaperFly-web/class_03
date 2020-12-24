@@ -33,7 +33,9 @@
         <div class="col-sm-6 col-md-4" th:each="group:${data}">
             <div class="thumbnail">
                 <div class="caption">
-                    <h3 th:text="'【'+${group.groupName}+'】分组详情'"></h3>
+                    <h3 th:text="'【'+${group.groupName}+'】分组详情'">
+                    </h3>
+
 
                     <p><a th:href="'/user/people/toGroup/'+${group.groupId}+'/'+${group.groupName}" class="btn btn-primary" role="button">点我查看分组情况</a>
                         <a sec:authorize="hasRole('admin')" th:href="'/people/delGroup/'+${group.groupId}" class="btn btn-danger" role="button">删除</a></p>

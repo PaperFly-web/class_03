@@ -33,14 +33,13 @@ public class HomeworkController {
 
     @Autowired
     HomeworkService homeworkService;
-    Set<String> params=new HashSet<>();
     QueryWrapper<HomeworkEntity> homeworkList = new QueryWrapper<HomeworkEntity>();
 
     //添加作业
     @PostMapping("/plus")
     @PreAuthorize("hasRole('admin')")
     public ModelAndView plusHomework(ModelAndView mv,String plus,@RequestParam("endTime") String  endTimeStr){
-        endTimeStr=endTimeStr+" 21:00";
+        endTimeStr=endTimeStr.replace("T"," ");
         DateTime dateTime = DateUtil.parse(endTimeStr);
         LocalDateTime endTime = LocalDateTime.ofInstant(dateTime.toInstant(), ZoneId.systemDefault());
 
@@ -50,6 +49,7 @@ public class HomeworkController {
         homeworkEntity.setEndTime(endTime);
         homeworkService.save(homeworkEntity);
         List<HomeworkEntity> homeworks = getList(homeworkService.list(homeworkList));
+
         mv.addObject("data",homeworks);
         mv.setViewName("homework/index");
         return mv;
@@ -134,6 +134,37 @@ public class HomeworkController {
         return "homework/upload";
     }
 
+    @PostMapping("/update/{type}")
+    @PreAuthorize("hasRole('admin')")
+    /**
+    *@desc:修改作业时间或者作业名字
+    *@param:[id, endTimeStr, map]
+    *@return:java.lang.String
+    *@author:paperfly
+    *@time:2020/12/24 14:20
+    */
+    public String update(@PathVariable("type") String type,@RequestParam(required = true) Integer id,@RequestParam(required = true)String param,Map map){
+        if (type.equals("time")){
+            param=param.replace("T"," ");
+
+            UpdateWrapper<HomeworkEntity> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("homework_id",id);
+            HomeworkEntity homeworkEntity = new HomeworkEntity();
+            DateTime dateTime = DateUtil.parse(param);
+            LocalDateTime endTime = LocalDateTime.ofInstant(dateTime.toInstant(), ZoneId.systemDefault());
+            homeworkEntity.setEndTime(endTime);
+            homeworkService.update(homeworkEntity,updateWrapper);
+        }else if(type.equals("name")){
+            UpdateWrapper<HomeworkEntity> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("homework_id",id);
+            HomeworkEntity homeworkEntity = new HomeworkEntity();
+            homeworkEntity.setHomeworkName(param);
+            homeworkService.update(homeworkEntity,updateWrapper);
+        }
+        map.put("data",getList(homeworkService.list(homeworkList)));
+        return "homework/index";
+    }
+
     public List<HomeworkEntity> getList(List<HomeworkEntity> list){
         List<HomeworkEntity> homeworkEntityList = list.stream().map(x -> {
             if (x.getEndTime().isBefore(LocalDateTime.now())) {
@@ -145,4 +176,7 @@ public class HomeworkController {
         }).collect(Collectors.toList());
         return homeworkEntityList;
     }
+
+
+
 }

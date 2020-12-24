@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 
 @Service("homeworkService")
 public class HomeworkServiceImpl extends ServiceImpl<HomeworkDao, HomeworkEntity> implements HomeworkService {
+
 }
